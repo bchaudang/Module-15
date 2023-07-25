@@ -8,7 +8,7 @@ d3.json(queryUrl).then(function (data) {
   createFeatures(data.features);
   });
 
-// Marker sizes
+// Marker size based on magnitude
 function markerSize(magnitude) {
   return magnitude * 4;
 };
@@ -38,14 +38,15 @@ function chooseColour(depth) {
 
       pointToLayer: function(feature, latlng) {
 
-        var markers = {
+        var markerOptions = {
           radius: markerSize(feature.properties.mag),
           color: chooseColour(feature.geometry.coordinates[2]),
-          fillOpacity: 0.5,
+          opacity: 0.5,
           stroke: true,
           weight: 20,
-        }
-        return L.circle(latlng, markers);
+        };
+      
+        return L.circle(latlng, markerOptions);
       }
     });
   
@@ -83,12 +84,29 @@ function chooseColour(depth) {
       zoom: 5,
       layers: [street, earthquakes]
     });
-  
+
+    // Add legend
+    var legend = L.control({position: "bottomright"});
+    legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend"),
+    depth = [-10, 10, 30, 50, 70, 90];
+
+    div.innerHTML += "<h3 style='text-align: center'>Depth</h3>"
+
+    for (var i = 0; i < depth.length; i++) {
+      div.innerHTML +=
+      '<i style="background:' + chooseColor(depth[i] + 1) + '"></i> ' + depth[i] + (depth[i + 1] ? '&ndash;' + depth[i + 1] + '<br>' : '+');
+    }
+    return div;
+    };
+    legend.addTo(myMap)
+    
     // Create a layer control.
     // Pass it our baseMaps and overlayMaps.
     // Add the layer control to the map.
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
+
   };
   
