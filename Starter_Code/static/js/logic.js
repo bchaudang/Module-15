@@ -12,7 +12,7 @@ var myMap = L.map("map", {
   var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
   
   d3.json(url).then(function(response) {
-  
+
     //console.log(response);
     features = response.features;
   
@@ -22,10 +22,14 @@ var myMap = L.map("map", {
   
       var location = features[i].geometry;
       if(location){
-        L.marker([location.coordinates[1], location.coordinates[0]]).addTo(myMap);
-      }
-    
-    }
+        L.circle([location.coordinates[1], location.coordinates[0]], {
+            color: "green",
+            fillColor: "green",
+            fillOpacity: 0.75,
+            radius: 500
+          }).addTo(myMap);
+        }}   
+
   
   });
   
