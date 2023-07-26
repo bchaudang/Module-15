@@ -15,8 +15,8 @@ function markerSize(magnitude) {
 
 // Change marker colours depending on depth
 function chooseColour(depth) {
-  if (depth < 10) return "#d4ff52";
-  else if (depth < 30) return "#ffff52";
+  if (depth < 10) return "#7dff52";
+  else if (depth < 30) return "#d4ff52";
   else if (depth < 50) return "#ffd452";
   else if (depth < 70) return "#ffa852";
   else if (depth < 90) return "#ff7d52";
@@ -29,7 +29,7 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (myMap) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        grades = [-10, 10, 30, 50, 70, 90],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
@@ -62,9 +62,9 @@ legend.addTo(myMap);
         var markerOptions = {
           radius: markerSize(feature.properties.mag),
           color: chooseColour(feature.geometry.coordinates[2]),
-          fillOpacity: 0.1,
+          fillOpacity: 0.5,
           stroke: true,
-          weight: 2,
+          weight: 2.25,
         } 
       
         return L.circleMarker(latlng, markerOptions);
