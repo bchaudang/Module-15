@@ -24,19 +24,25 @@ function chooseColour(depth) {
 }
 
 
-  // Add the legend with colors to corrolate with depth
-  var legend = L.control({position: "bottomright"});
-  legend.onAdd = function() {
-    var div = L.DomUtil.create("div", "info legend"),
-    depth = [-10, 10, 30, 50, 70, 90];
-  
-    for (var i = 0; i < depth.length; i++) {
-      div.innerHTML +=
-      '<i style="background:' + chooseColour(depth[i] + 1) + '"></i> ' + depth[i] + (depth[i + 1] ? '&ndash;' + depth[i + 1] + '<br>' : '+');
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (myMap) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + chooseColour(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
+
     return div;
-  };
-  legend.addTo(myMap);
+};
+
+legend.addTo(myMap);
   
 
   function createFeatures(earthquakeData) {
@@ -56,7 +62,7 @@ function chooseColour(depth) {
         var markerOptions = {
           radius: markerSize(feature.properties.mag),
           color: chooseColour(feature.geometry.coordinates[2]),
-          opacity: 3,
+          fillOpacity: 0.1,
           stroke: true,
           weight: 2,
         } 
