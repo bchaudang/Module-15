@@ -23,14 +23,14 @@ function chooseColour(depth) {
   else return "#ff5050";
 }
 
-
+// Add legend
 var legend = L.control({position: 'bottomright'});
-
 legend.onAdd = function (myMap) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [-10, 10, 30, 50, 70, 90],
-        labels = [];
+        grades = [-10, 10, 30, 50, 70, 90];
+        title = "<h2>Depth of Earthquake"
+        
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
@@ -41,10 +41,9 @@ legend.onAdd = function (myMap) {
 
     return div;
 };
-
 legend.addTo(myMap);
-  
 
+ // Features for the map 
   function createFeatures(earthquakeData) {
 
     // Define a function that we want to run once for each feature in the features array.
@@ -74,6 +73,7 @@ legend.addTo(myMap);
     // Send our earthquakes layer to the createMap function/
     createMap(earthquakes);
   }
+  
   function createMap(earthquakes) {
   
     // Create the base layers.  
